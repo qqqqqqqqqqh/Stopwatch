@@ -1,1 +1,1 @@
-This is a Stopwatch running on iOS device.
+This is a Stopwatch running on an iOS device.
