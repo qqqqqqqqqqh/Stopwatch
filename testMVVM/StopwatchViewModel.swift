@@ -13,7 +13,7 @@ class StopwatchViewModel {
 
     private let mainStopwatch = Stopwatch()
     private let lapStopwatch = Stopwatch()
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     // MARK: - Outputs
     var mainTime: Driver<String> {
@@ -63,7 +63,9 @@ class StopwatchViewModel {
         setupBindings()
         loadData()
     }
-    
+    deinit {
+        disposeBag = DisposeBag()
+    }
     private func setupTimer() {
         // 创建一个每35毫秒发射一个递增值(Int)的Observable
         Observable<Int>.interval(.milliseconds(35), scheduler: MainScheduler.instance)

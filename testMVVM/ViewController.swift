@@ -11,8 +11,8 @@ import SnapKit
 
 
 class ViewController: UIViewController {
-    private let disposeBag = DisposeBag()
-    private let viewModel = StopwatchViewModel()
+    private var disposeBag = DisposeBag()
+    let viewModel = StopwatchViewModel()
     
     let topView = UIView()
     // mid section
@@ -47,6 +47,7 @@ class ViewController: UIViewController {
             selector: #selector(handleAppTermination),
             name: UIApplication.willResignActiveNotification,
             object: nil)
+
     }
 
     func setupUI() {
@@ -184,6 +185,11 @@ class ViewController: UIViewController {
         
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        disposeBag = DisposeBag()
+    }
+    
     @objc func handleAppTermination() {
         viewModel.saveData()
     }
@@ -200,13 +206,16 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         // 手动创建
-        let cellID = "lapCell"
-        var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: cellID)
+        let identifier: String = "lapCell"
+        var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil {
             cell = UITableViewCell(style: .value1, reuseIdentifier: "cellId")
         }
-        cell?.textLabel?.text = "Lap \(self.laps.count - indexPath.row)"
-        cell?.detailTextLabel?.text = self.laps[self.laps.count - indexPath.row - 1]
+        if let cell = cell {
+            cell.textLabel?.text = "Lap \(self.laps.count - indexPath.row)"
+            cell.detailTextLabel?.text = self.laps[self.laps.count - indexPath.row - 1]
+        }
+        
         return cell!
     }
 }
