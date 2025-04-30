@@ -12,7 +12,7 @@ import SnapKit
 
 class ViewController: UIViewController {
     private var disposeBag = DisposeBag()
-    let viewModel = StopwatchViewModel()
+    private let viewModel = StopwatchViewModel()
     
     let topView = UIView()
     // mid section
@@ -209,7 +209,7 @@ extension ViewController: UITableViewDataSource {
         let identifier: String = "lapCell"
         var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil {
-            cell = UITableViewCell(style: .value1, reuseIdentifier: "cellId")
+            cell = UITableViewCell(style: .value1, reuseIdentifier: identifier)
         }
         if let cell = cell {
             cell.textLabel?.text = "Lap \(self.laps.count - indexPath.row)"
